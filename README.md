@@ -13,7 +13,8 @@ A simple ASP.NET Core MVC API demonstrating two key functionalities:
 - SQLite database integration via Entity Framework Core  
 - Swagger UI for API documentation and testing  
 - Validation with proper HTTP responses (400 Bad Request on invalid input)
-- xUnit tests included to ensure code quality and correctness 
+- xUnit tests included to ensure code quality and correctness
+- CI/CD pipeline configured for automated builds and test execution
 - Designed for easy extension and CI/CD showcase  
 
 ---
