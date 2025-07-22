@@ -21,10 +21,10 @@ A simple ASP.NET Core MVC API demonstrating two key functionalities:
 
 ## Let's Connect!
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bastian-stenglein/)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bastian-stenglein/)
 Reach out on LinkedIn and let's network!  
 
-✉️ Email me anytime: [stenglein.bastian@hotmail.com](mailto:stenglein.bastian@hotmail.com)
+✉️ Email me anytime: [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:stenglein.bastian@hotmail.com)
 
 ---
 
