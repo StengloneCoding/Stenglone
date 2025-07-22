@@ -1,0 +1,8 @@
+@StenglonesApi_HostAddress = http://localhost:5065
+
+GET {{StenglonesApi_HostAddress}}/fizzbuzz?start=1&end=20
+Accept: application/json
+
+
+GET {{StenglonesApi_HostAddress}}/
+Accept: text/html
