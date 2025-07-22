@@ -20,3 +20,5 @@ A simple ASP.NET Core MVC API demonstrating two key functionalities:
 ---
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bastian-stenglein/)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:stenglein.bastian@hotmail.com)
+
