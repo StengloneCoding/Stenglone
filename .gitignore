@@ -28,6 +28,9 @@ Thumbs.db
 # Others
 *.vsix
 *.pdb
+*.sqlite
+*.db
+
 
 # Dotnet tool directories
 .vscode/
