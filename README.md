@@ -19,5 +19,4 @@ A simple ASP.NET Core MVC API demonstrating two key functionalities:
 
 ---
 
-
-![Ich]([https://link-zu-deinem-bild.jpg](https://media.licdn.com/dms/image/v2/C4D03AQFCGZaJI0BPYg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1621252759983?e=1756339200&v=beta&t=JdfHi3t9RrUvwA9q9TFdjaW4Ejpty4lOIzHKM9JxQUw))
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bastian-stenglein/)
