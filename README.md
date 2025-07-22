@@ -18,3 +18,6 @@ A simple ASP.NET Core MVC API demonstrating two key functionalities:
 - Designed for easy extension and CI/CD showcase  
 
 ---
+
+
+![Ich]([https://link-zu-deinem-bild.jpg](https://media.licdn.com/dms/image/v2/C4D03AQFCGZaJI0BPYg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1621252759983?e=1756339200&v=beta&t=JdfHi3t9RrUvwA9q9TFdjaW4Ejpty4lOIzHKM9JxQUw))
