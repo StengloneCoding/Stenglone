@@ -1,19 +1,32 @@
 namespace StenglonesApi.Tests;
 
-using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StenglonesApi.Services;
+using Microsoft.Extensions.Logging;
+using Moq;
 using StenglonesApi.Data;
 using StenglonesApi.DTOs;
 using StenglonesApi.Models;
+using StenglonesApi.Services;
+using Xunit;
 
 public class MachineMetricsServiceTests
 {
+    private readonly AppDbContext _context;
+    private readonly ILogger<MachineMetricsService> _logger;
+    private readonly MachineMetricsService _service;
+
+    public MachineMetricsServiceTests()
+    {
+        _context = GetInMemoryDbContext();
+        _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<MachineMetricsService>();
+        _service = new MachineMetricsService(_context, _logger);
+    }
+
     private AppDbContext GetInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString()) 
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         return new AppDbContext(options);
     }
@@ -21,42 +34,57 @@ public class MachineMetricsServiceTests
     [Fact]
     public async Task SaveMetricAsync_AddsMetricToDatabase()
     {
-        // Arrange
-        var context = GetInMemoryDbContext();
-        var service = new MachineMetricsService(context);
         var dto = new MachineMetricDto
         {
             Temperature = 25.5,
             RotationSpeed = 1500,
-            Timestamp = DateTime.UtcNow
+            CreatedAtTimestamp = DateTime.UtcNow
         };
 
-        // Act
-        await service.SaveMetricAsync(dto);
+        await _service.SaveMetricAsync(dto, CancellationToken.None);
 
-        // Assert
-        var savedMetrics = await context.MachineMetrics.ToListAsync(TestContext.Current.CancellationToken);
+        var savedMetrics = await _context.MachineMetrics.ToListAsync(CancellationToken.None);
         Assert.Single(savedMetrics);
         Assert.Equal(dto.Temperature, savedMetrics[0].Temperature);
         Assert.Equal(dto.RotationSpeed, savedMetrics[0].RotationSpeed);
-        Assert.Equal(dto.Timestamp, savedMetrics[0].Timestamp);
+        Assert.Equal(dto.CreatedAtTimestamp, savedMetrics[0].CreatedAtTimestamp);
+    }
+
+    [Fact]
+    public async Task UpdateMetricAsync_UpdatesMetricInDatabase()
+    {
+        var dto = new MachineMetricDto
+        {
+            Temperature = 25.5,
+            RotationSpeed = 1500
+        };
+
+        {
+            _context.MachineMetrics.Add(new MachineMetric { Temperature = 20, RotationSpeed = 1000, CreatedAtTimestamp = DateTime.UtcNow });
+            await _context.SaveChangesAsync(CancellationToken.None);
+
+            await _service.UpdateMetricAsync(1, dto, CancellationToken.None);
+
+            var savedMetrics = await _context.MachineMetrics.ToListAsync(CancellationToken.None);
+            Assert.Single(savedMetrics);
+            Assert.Equal(dto.Temperature, savedMetrics[0].Temperature);
+            Assert.Equal(dto.RotationSpeed, savedMetrics[0].RotationSpeed);
+            Assert.NotNull(savedMetrics[0].UpdatedAtTimestamp);
+            Assert.True(savedMetrics[0].UpdatedAtTimestamp > DateTime.UtcNow.AddMinutes(-1));
+
+        }
     }
 
     [Fact]
     public async Task GetAllAsync_ReturnsAllSavedMetrics()
     {
-        // Arrange
-        var context = GetInMemoryDbContext();
-        var service = new MachineMetricsService(context);
+        _context.MachineMetrics.Add(new MachineMetric { Temperature = 20, RotationSpeed = 1000, CreatedAtTimestamp = DateTime.UtcNow });
+        _context.MachineMetrics.Add(new MachineMetric { Temperature = 30, RotationSpeed = 2000, CreatedAtTimestamp = DateTime.UtcNow });
 
-        context.MachineMetrics.Add(new MachineMetric { Temperature = 20, RotationSpeed = 1000, Timestamp = DateTime.UtcNow });
-        context.MachineMetrics.Add(new MachineMetric { Temperature = 30, RotationSpeed = 2000, Timestamp = DateTime.UtcNow });
-        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await _context.SaveChangesAsync(CancellationToken.None);
 
-        // Act
-        var result = await service.GetAllAsync(TestContext.Current.CancellationToken);
+        var result = await _service.GetAllAsync(CancellationToken.None);
 
-        // Assert
         Assert.Equal(2, result.Count);
     }
 }
