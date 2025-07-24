@@ -1,19 +1,48 @@
 # StenglonesApi
 
-A simple ASP.NET Core MVC API demonstrating two key functionalities:
+A modern ASP.NET Core MVC API built with best practices and leveraging the latest features from .NET 9 and C# 13.
 
-- **FizzBuzz API:** Generates FizzBuzz results for a given numeric range.
-- **MachineMetrics API:** Accepts machine sensor data (temperature and RPM) and stores it in an SQLite database.
+## Main Features
+
+- **FizzBuzz API:** Generates FizzBuzz results for a specified number range.  
+- **MachineMetrics API:** Collects machine sensor data (temperature & rotation speed), supports adding, retrieving, and updating metrics, and stores them in a SQLite database.
 
 ---
 
 ## Features
 
-- Clean MVC architecture: Controllers, Services, Models, DTOs  
+- Clean MVC architecture with well-separated Controllers, Services, Models, and DTOs  
 - SQLite database integration via Entity Framework Core  
-- Swagger UI for API documentation and testing  
-- Validation with proper HTTP responses (400 Bad Request on invalid input)
-- xUnit tests included to ensure code quality and correctness 
-- Designed for easy extension and CI/CD showcase  
+- Swagger UI for interactive API documentation and testing, available at the root URL (`http://localhost:5065/`)  
+- Robust validation with proper HTTP responses
+- **Behavior Driven Development (BDD):** Comprehensive tests using Gherkin feature files and step definitions (SpecFlow)  
+- xUnit & BDD tests to ensure code quality and correctness  
+- Utilizing modern C# 13 language features (Primary Constructors, Interpolated Strings and more)  
+- CI/CD pipeline for automated builds and tests  
+- Supports graceful cancellation via `CancellationToken` in controller actions and services  
 
 ---
+
+## Current Improvements in Progress
+
+- **Centralized Exception Handling Middleware:** To streamline error responses and reduce repetitive try-catch blocks in controllers.  
+- **Custom Validation Attributes:** Planned implementation for temperature validation directly on DTO properties for cleaner and reusable input validation.
+
+---
+
+## Quickstart
+
+1. Install .NET 9 SDK  
+2. Run `dotnet restore`  
+3. Run `dotnet build`  
+4. Run `dotnet test` (executes both xUnit and BDD tests)  
+5. Start the API: `dotnet run --project StenglonesApi`  
+
+Swagger UI will be available at the root URL: `http://localhost:5065/`.
+
+---
+
+## Let's Connect!
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bastian-stenglein/)  
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:stenglein.bastian@hotmail.com)
