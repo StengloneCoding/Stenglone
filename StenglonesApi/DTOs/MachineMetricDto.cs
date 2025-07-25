@@ -1,9 +1,8 @@
-﻿namespace StenglonesApi.DTOs
+﻿namespace StenglonesApi.DTOs;
+public class MachineMetricDto
 {
-    public class MachineMetricDto
-    {
-        public double Temperature { get; set; }
-        public int RotationSpeed { get; set; }
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-    }
+    required public double Temperature { get; init; }
+    required public int RotationSpeed { get; init; }
+    public DateTime CreatedAtTimestamp { get; init; } = DateTime.UtcNow;
 }
+

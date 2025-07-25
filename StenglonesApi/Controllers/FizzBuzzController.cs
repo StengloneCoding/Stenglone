@@ -1,31 +1,35 @@
-﻿namespace StenglonesApi.Controllers
+﻿namespace StenglonesApi.Controllers;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using StenglonesApi.Interface;
+using StenglonesApi.Interfaces;
+
+[ApiController]
+[Route("[controller]")]
+public class FizzBuzzController(IFizzBuzzService fizzBuzzService, ILogger<FizzBuzzController> logger) : ControllerBase
 {
-    using Microsoft.AspNetCore.Mvc;
-    using StenglonesApi.Services;
+    private readonly IFizzBuzzService _fizzBuzzService = fizzBuzzService;
+    private readonly ILogger<FizzBuzzController> _logger = logger;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class FizzBuzzController : ControllerBase
+    [HttpGet]
+    public IActionResult Get([FromQuery] int start, [FromQuery] int end)
     {
-        private readonly FizzBuzzService _fizzBuzzService;
-
-        public FizzBuzzController(FizzBuzzService fizzBuzzService)
+        if (start > end)
         {
-            _fizzBuzzService = fizzBuzzService;
+            const string msg = "Start must be less than or equal to end.";
+            _logger.LogWarning(msg + " start={Start}, end={End}", start, end);
+            return BadRequest(msg);
         }
 
-        [HttpGet]
-        public IActionResult Get([FromQuery] int start, [FromQuery] int end)
+        if (end - start > 1000)
         {
-            if (start > end)
-                return BadRequest("Start must be less than or equal to end.");
-
-            if (end - start > 1000)
-                return BadRequest("Maximum range of 1000 allowed.");
-
-            var result = _fizzBuzzService.Generate(start, end);
-            return Ok(result);
+            const string msg = "Maximum range of 1000 allowed.";
+            _logger.LogWarning(msg + " range={Range}", end - start);
+            return BadRequest(msg);
         }
+
+        var result = _fizzBuzzService.Generate(start, end);
+        return Ok(result);
     }
-
 }
