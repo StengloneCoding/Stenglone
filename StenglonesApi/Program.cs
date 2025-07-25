@@ -4,7 +4,6 @@ global using System.Threading;
 using Microsoft.AspNetCore.Diagnostics;
 using StenglonesApi.Conventions;
 using StenglonesApi.Data;
-using StenglonesApi.Exceptions;
 using StenglonesApi.Interface;
 using StenglonesApi.Interfaces;
 using StenglonesApi.Services;
@@ -43,18 +42,36 @@ app.UseExceptionHandler(options =>
     options.Run(async context =>
     {
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-        if (exception is NotFoundException notFoundEx)
+
+        int statusCode = exception switch
         {
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsJsonAsync(new { message = notFoundEx.Message });
-        }
-        else
+            KeyNotFoundException => StatusCodes.Status404NotFound,
+            ArgumentException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/problem+json";
+
+        var problemDetails = new ProblemDetails
         {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(new { message = "Ein unerwarteter Fehler ist aufgetreten." });
-        }
+            Status = statusCode,
+            Title = statusCode switch
+            {
+                StatusCodes.Status404NotFound => "Resource not found",
+                StatusCodes.Status400BadRequest => "Bad request",
+                StatusCodes.Status500InternalServerError => "Internal server error",
+                _ => "Error"
+            },
+            Detail = exception?.Message,
+            Instance = context.Request.Path
+        };
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
     });
 });
+
+
 
 using (var scope = app.Services.CreateScope())
 {

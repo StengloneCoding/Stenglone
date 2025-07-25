@@ -5,8 +5,6 @@ using StenglonesApi.Models;
 using StenglonesApi.Data;
 using StenglonesApi.Interfaces;
 using StenglonesApi.Utils;
-using StenglonesApi.Exceptions;
-using System.Security.Principal;
 
 public class MachineMetricsService : IMachineMetricsService
 {
@@ -46,9 +44,9 @@ public class MachineMetricsService : IMachineMetricsService
         var entity = await _context.MachineMetrics.Where(m => m.Id == id).FirstOrDefaultAsync(cancellationToken);
         if (entity == null)
         {
-            string errorMessage = $"Metric with ID {id} not found.";
+            string errorMessage = $"Metric #{id} not found.";
             _logger.LogWarning(errorMessage);
-            throw new NotFoundException($"Not Found: {errorMessage}");
+            throw new KeyNotFoundException($"Metric #{id} not found.");
         }
 
         dto.MapToExisting(entity);
@@ -59,12 +57,12 @@ public class MachineMetricsService : IMachineMetricsService
         }
         catch (DbUpdateException dbEx)
         {
-            _logger.LogError(dbEx, $"Database update failed while updating metric with the id: {id}.");
+            _logger.LogError(dbEx, $"Database update failed while updating metric #{id}.");
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"An unexpected error occurred while updating the metric id: {id}.");
+            _logger.LogError(ex, $"An unexpected error occurred while updating the metric #{id}.");
             throw;
         }
     }
