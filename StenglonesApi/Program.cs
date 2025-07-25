@@ -7,6 +7,7 @@ using StenglonesApi.Data;
 using StenglonesApi.Interface;
 using StenglonesApi.Interfaces;
 using StenglonesApi.Services;
+using System.Reflection;
 
 const string API_PREFIX = "api/v1";
 
@@ -28,6 +29,11 @@ builder.Services.AddSwaggerGen(c =>
         Title = "StenglonesApi",
         Version = API_PREFIX
     });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddControllers(options =>

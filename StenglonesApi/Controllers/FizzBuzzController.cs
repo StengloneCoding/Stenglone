@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StenglonesApi.Interface;
 using StenglonesApi.Interfaces;
+using StenglonesApi.Models;
 
 [ApiController]
 [Route("[controller]")]
@@ -12,6 +13,15 @@ public class FizzBuzzController(IFizzBuzzService fizzBuzzService, ILogger<FizzBu
     private readonly IFizzBuzzService _fizzBuzzService = fizzBuzzService;
     private readonly ILogger<FizzBuzzController> _logger = logger;
 
+    /// <summary>
+    /// Returns the FizzBuzz result for a given number or range.
+    /// </summary>
+    /// <returns>
+    /// "Fizz" if the number is divisible by 3, 
+    /// "Buzz" if divisible by 5, 
+    /// "FizzBuzz" if divisible by both, 
+    /// otherwise the number as string.
+    /// </returns>
     [HttpGet]
     public IActionResult Get([FromQuery] int start, [FromQuery] int end)
     {
