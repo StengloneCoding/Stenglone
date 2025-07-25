@@ -19,8 +19,7 @@ A modern ASP.NET Core MVC API built with best practices and leveraging the lates
 - **Behavior Driven Development (BDD):** Comprehensive tests using Gherkin feature files and step definitions (SpecFlow)  
 - xUnit & BDD tests to ensure code quality and correctness  
 - Utilizing modern C# 13 language features (Primary Constructors, Interpolated Strings and more)  
-- CI/CD pipeline for automated builds and tests  
-- Supports graceful cancellation via `CancellationToken` in controller actions and services  
+- CI/CD pipeline for automated builds and tests   
 
 
 ---
