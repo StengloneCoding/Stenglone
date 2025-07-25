@@ -1,9 +1,7 @@
 namespace StenglonesApi.Tests;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Moq;
 using StenglonesApi.Data;
 using StenglonesApi.DTOs;
 using StenglonesApi.Models;
@@ -87,4 +85,15 @@ public class MachineMetricsServiceTests
 
         Assert.Equal(2, result.Count);
     }
+
+    [Fact]
+    public async Task UpdateMetricAsync_ThrowsKeyNotFoundException_WhenEntityNotFound()
+    {
+        var dto = new MachineMetricDto { Temperature = 10, RotationSpeed = 1000 };
+        var service = new MachineMetricsService(_context, _logger);
+
+        var ex = await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateMetricAsync(999, dto));
+        Assert.Contains("not found", ex.Message);
+    }
+
 }

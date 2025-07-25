@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>StenglonesApi.Tests</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
+	<LangVersion>13.0</LangVersion>
     <!--
     To enable the Microsoft Testing Platform 'dotnet test' experience, add property:
       <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
