@@ -14,19 +14,14 @@ A modern ASP.NET Core MVC API built with best practices and leveraging the lates
 - Clean MVC architecture with well-separated Controllers, Services, Models, and DTOs  
 - SQLite database integration via Entity Framework Core  
 - Swagger UI for interactive API documentation and testing, available at the root URL (`http://localhost:5065/`)  
-- Robust validation with proper HTTP responses
+- Robust validation with proper HTTP responses, including centralized exception handling middleware for consistent error management
+- Comprehensive negative test cases to ensure API resilience and correct error responses
 - **Behavior Driven Development (BDD):** Comprehensive tests using Gherkin feature files and step definitions (SpecFlow)  
 - xUnit & BDD tests to ensure code quality and correctness  
 - Utilizing modern C# 13 language features (Primary Constructors, Interpolated Strings and more)  
 - CI/CD pipeline for automated builds and tests  
 - Supports graceful cancellation via `CancellationToken` in controller actions and services  
 
----
-
-## Current Improvements in Progress
-
-- **Centralized Exception Handling Middleware:** To streamline error responses and reduce repetitive try-catch blocks in controllers.  
-- **Custom Validation Attributes:** Planned implementation for temperature validation directly on DTO properties for cleaner and reusable input validation.
 
 ---
 
