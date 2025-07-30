@@ -1,4 +1,4 @@
-name: Simple .NET CI
+name: .NET CI with SonarCloud
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build and SonarCloud Analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,13 +18,32 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Install SonarCloud Scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Begin SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner begin \
+            /k:"StengloneCoding_DeviceSimulation" \
+            /o:"stenglonecoding" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io"
+
       - name: Restore
         run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
+      - name: End SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
   test:
+    name: Run Tests
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -38,20 +58,21 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Run tests
+      - name: Run Tests
         run: |
           dotnet test \
             --configuration Release \
             --logger "trx;LogFileName=test-results.trx" \
             --results-directory "artifacts/test-results"
-      - name: Upload .trx
+
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: TestResults
           path: artifacts/test-results/**/*.trx
 
-      - name: Test report
+      - name: Report Test Results
         uses: dorny/test-reporter@v2
         if: ${{ always() }}
         with:
